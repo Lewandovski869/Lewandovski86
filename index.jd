@@ -1,0 +1,24 @@
+package main
+
+import "..."
+
+type Block struct {
+  Timestamp int64       // seconds since (unix) epoch (1970-01-01)
+  Data      string
+  PrevHash  string
+  Hash      string  
+}
+
+
+func calcHash( data string ) string {
+  hashed := sha256.Sum256( []byte(data) )
+  return binToStr( hashed[:] )   // note: [:] converts [32]byte to []byte
+}
+
+
+func NewBlock(data string, prevHash string) Block {
+  timestamp := time.Now().Unix()
+  hash      := calcHash( intToStr(timestamp) + prevHash + data )
+
+  return Block { timestamp, data, prevHash, hash }
+}
